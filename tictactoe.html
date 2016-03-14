@@ -1,0 +1,112 @@
+<html>
+
+<style>
+ .green{ background-color: green; }
+ .blue{ background-color: blue; }
+</style>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+ <script>
+	/***
+	Paolo Marco Manarang
+	2016-03-05
+	UI page that uses ajax to call the script ticajax.php
+	***/
+
+ $(document).ready(function(){
+
+   var currentPlayer = "p1"; 
+   $('#ticForm input[type=checkbox]').attr('checked',false); //removed the check status  checkbox to avoid cache of status of checkboxes
+   $('#ticForm input[type=checkbox]').attr('disabled',false); //enable checkbox to avoid cache of disabled attribute of checkboxes
+
+   $('#ticform :checkbox').change(function() {
+	    if($(this).is(":checked")){
+	 		
+ 		 checkvalue = $(this).attr('value');
+
+   	       $.ajax({
+			    type:'POST',
+			    data:  {player : currentPlayer,value : checkvalue},
+			    dataType: 'json',
+			    url:'ticajax.php',
+			    success:function(data) { 
+ 
+			    	if(data.is_win == 1){
+			    		alert("Player "+data.player+" Wins")
+			    		$('#ticForm input[type=checkbox]').attr('disabled',true);
+			    		$('#currplayer').text("Player "+data.player+" Wins");
+			    	}
+			    }
+			  }); //end of ajx call 
+
+
+	    	if(currentPlayer == "p1"){
+		        $(this).parent().addClass("green"); 
+	    	}else{
+		        $(this).parent().addClass("blue"); 
+	    	}
+	        $(this).attr('disabled', true);
+
+	        //alert($(this).attr('value'));
+
+
+
+	    }//end of checked function
+
+	    changePlayer();
+	    $('#currplayer').text(currentPlayer);
+	}); //end checkbox change
+
+
+      $("#reset").click(function(){
+       	  location.reload();
+      }); 
+
+   function changePlayer(){
+	    if( currentPlayer  == "p1" )
+	        currentPlayer = "p2";
+	    else{
+	        currentPlayer = "p1";
+	    }
+	} //end changePlayer
+
+}); //end document ready 
+
+
+</script>
+<body>
+
+
+
+<form name="ticform" id="ticform">
+<center>
+Current Player : <div id="currplayer">p1</div>
+<table style="margin-top:50px">
+
+ <tr>
+ 	<td><input type="checkbox" value="00"></td>
+ 	<td><input type="checkbox" value="01"></td>
+ 	<td><input type="checkbox" value="02"></td>
+ </tr>
+
+ <tr>
+ 	<td><input type="checkbox" value="10"></td>
+ 	<td><input type="checkbox" value="11"></td>
+ 	<td><input type="checkbox" value="12"></td>
+ </tr>
+
+  <tr>
+ 	<td><input type="checkbox" value="20"></td>
+ 	<td><input type="checkbox" value="21"></td>
+ 	<td><input type="checkbox" value="22"></td>
+ </tr>
+<table>
+<input type="button" name="reset" value="Reset" id="reset">
+</center>
+</form>
+
+
+
+</body>
+</html>
