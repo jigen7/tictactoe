@@ -71,6 +71,7 @@ $value  = $_POST['value'];
 	}
  }//end foreach
     //Sample Comment Added Code
+	//Sample Comment Added 2021/05/19
     echo json_encode(array("is_win"=>$is_win,"player"=>$player));
 
 ?> 
