@@ -70,7 +70,7 @@ $value  = $_POST['value'];
 		//echo "Nothing<br>";
 	}
  }//end foreach
-
+    //Sample Comment Added Code
     echo json_encode(array("is_win"=>$is_win,"player"=>$player));
 
 ?> 
